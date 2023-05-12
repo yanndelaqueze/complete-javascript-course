@@ -187,8 +187,17 @@ console.log(
 
 for (const [key, event] of gameEvents) {
   if (key < 45) {
-    console.log(`[FIRST HALF] ${key} : ${event}`);
+    // console.log(`[FIRST HALF] ${key} : ${event}`);
   } else {
-    console.log(`[SECOND HALF] ${key} : ${event}`);
+    // console.log(`[SECOND HALF] ${key} : ${event}`);
   }
 }
+
+// Challenge 4
+
+// Write a program that receives a list of variable names written in underscore_case and convert them to camelCase.
+// The input will come from a textarea inserted into the DOM (see code below to insert the elements), and conversion will happen when the button is pressed.
+
+const camelCase = function (text) {
+  const array = text.split('\n');
+};
