@@ -91,8 +91,6 @@ const displayMovements = function (movements) {
   });
 };
 
-displayMovements(account1.movements);
-
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => {
     return acc + mov;
@@ -100,28 +98,24 @@ const calcDisplayBalance = function (movements) {
   labelBalance.textContent = `${balance} €`;
 };
 
-calcDisplayBalance(account1.movements);
-
-const calcDisplaySummary = function (movements) {
-  const incomes = movements
+const calcDisplaySummary = function (acc) {
+  const incomes = acc.movements
     .filter(mov => mov >= 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${incomes}€`;
 
-  const out = movements
+  const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `${Math.abs(out)}€`;
 
-  const interest = movements
+  const interest = acc.movements
     .filter(mov => mov >= 0)
-    .map(deposit => deposit * 0.012)
+    .map(deposit => deposit * (acc.interestRate / 100))
     .filter(int => int >= 1)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumInterest.textContent = `${interest}€`;
 };
-
-calcDisplaySummary(account1.movements);
 
 const createUsernames = function (accounts) {
   accounts.forEach(account => {
@@ -133,6 +127,30 @@ const createUsernames = function (accounts) {
   });
 };
 createUsernames(accounts);
+
+let currentAccount;
+
+btnLogin.addEventListener('click', function (event) {
+  event.preventDefault();
+  console.log('login');
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // display UI & Welcome Message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+    containerApp.style.opacity = 100;
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+    // display movements, balance & summary
+    displayMovements(currentAccount.movements);
+    calcDisplayBalance(currentAccount.movements);
+    calcDisplaySummary(currentAccount);
+  }
+});
 
 // CHALLENGES //
 
@@ -214,14 +232,14 @@ TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
 GOOD LUCK 😀
 */
 
-const ages1 = [5, 2, 4, 1, 15, 8, 3];
-const ages2 = [16, 6, 10, 5, 6, 1, 4];
+// const ages1 = [5, 2, 4, 1, 15, 8, 3];
+// const ages2 = [16, 6, 10, 5, 6, 1, 4];
 
-const calcAverageHumanAge = ages =>
-  ages
-    .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
-    .filter(age => age >= 18)
-    .reduce((acc, age, i, arr) => acc + age / arr.length, 0);
+// const calcAverageHumanAge = ages =>
+//   ages
+//     .map(age => (age <= 2 ? 2 * age : 16 + age * 4))
+//     .filter(age => age >= 18)
+//     .reduce((acc, age, i, arr) => acc + age / arr.length, 0);
 
-console.log(ages1);
-console.log(calcAverageHumanAge(ages1));
+// console.log(ages1);
+// console.log(calcAverageHumanAge(ages1));
