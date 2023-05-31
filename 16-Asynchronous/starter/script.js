@@ -200,6 +200,15 @@ const renderError = function (msg) {
 //   getCountryData('sgsr');
 // });
 
+const whereAmI = async function (country) {
+  const res = await fetch(
+    `https://countries-api-836d.onrender.com/countries/name/${country}`
+  );
+  console.log(res);
+};
+
+whereAmI('portugal');
+
 ///////////////////////
 // CODING CHALLENGES
 ////////////////////////
@@ -278,43 +287,43 @@ TEST DATA: Images in the img folder. Test the error handler by passing a wrong i
 GOOD LUCK 😀
 */
 
-const wait = function (seconds) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, seconds * 1000);
-  });
-};
+// const wait = function (seconds) {
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, seconds * 1000);
+//   });
+// };
 
-const imgContainer = document.querySelector('.images');
+// const imgContainer = document.querySelector('.images');
 
-const createImage = function (imgPath) {
-  return new Promise(function (resolve, reject) {
-    const img = document.createElement('img');
-    img.src = imgPath;
+// const createImage = function (imgPath) {
+//   return new Promise(function (resolve, reject) {
+//     const img = document.createElement('img');
+//     img.src = imgPath;
 
-    img.addEventListener('load', function () {
-      imgContainer.append(img);
-      resolve(img);
-    });
+//     img.addEventListener('load', function () {
+//       imgContainer.append(img);
+//       resolve(img);
+//     });
 
-    img.addEventListener('error', function () {
-      reject(new Error('Img not found !!'));
-    });
-  });
-};
+//     img.addEventListener('error', function () {
+//       reject(new Error('Img not found !!'));
+//     });
+//   });
+// };
 
-let currentImg;
-createImage('img/img-1.jpg')
-  .then(img => {
-    currentImg = img;
-    console.log('Img 1 loaded');
-    return wait(2);
-  })
-  .then(() => {
-    currentImg.style.display = 'none';
-    return createImage('img/img-2.jpg');
-  })
-  .then(img => {
-    currentImg = img;
-    console.log('Img 2 loaded');
-  })
-  .catch(err => console.error(err));
+// let currentImg;
+// createImage('img/img-1.jpg')
+//   .then(img => {
+//     currentImg = img;
+//     console.log('Img 1 loaded');
+//     return wait(2);
+//   })
+//   .then(() => {
+//     currentImg.style.display = 'none';
+//     return createImage('img/img-2.jpg');
+//   })
+//   .then(img => {
+//     currentImg = img;
+//     console.log('Img 2 loaded');
+//   })
+//   .catch(err => console.error(err));
