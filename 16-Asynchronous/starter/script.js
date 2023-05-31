@@ -128,45 +128,45 @@ const renderError = function (msg) {
 //     });
 // };
 
-const getJSON = function (url, errorMsg = 'Something went Wrong') {
-  return fetch(url).then(response => {
-    if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
+// const getJSON = function (url, errorMsg = 'Something went Wrong') {
+//   return fetch(url).then(response => {
+//     if (!response.ok) throw new Error(`${errorMsg} (${response.status})`);
 
-    return response.json();
-  });
-};
+//     return response.json();
+//   });
+// };
 
-const getCountryData = function (country) {
-  // COUNTRY 1
-  getJSON(
-    `https://countries-api-836d.onrender.com/countries/name/${country}`,
-    `Country not found`
-  )
-    .then(data => {
-      renderCountry(data[0]);
-      const neighbour = data[0].borders?.[0];
+// const getCountryData = function (country) {
+//   // COUNTRY 1
+//   getJSON(
+//     `https://countries-api-836d.onrender.com/countries/name/${country}`,
+//     `Country not found`
+//   )
+//     .then(data => {
+//       renderCountry(data[0]);
+//       const neighbour = data[0].borders?.[0];
 
-      if (!neighbour) throw new Error('no neighbour found');
+//       if (!neighbour) throw new Error('no neighbour found');
 
-      // COUNTRY 2
-      return getJSON(
-        `https://countries-api-836d.onrender.com/countries/alpha/${neighbour}`,
-        `Country not found`
-      );
-    })
-    .then(data => renderCountry(data, 'neighbour'))
-    .catch(err => {
-      console.log(`${err} 🔥🔥🔥`);
-      renderError(`Something went wrong 🔥🔥🔥 ${err.message}. Try again !`);
-    })
-    .finally(() => {
-      countriesContainer.style.opacity = 1;
-    });
-};
+//       // COUNTRY 2
+//       return getJSON(
+//         `https://countries-api-836d.onrender.com/countries/alpha/${neighbour}`,
+//         `Country not found`
+//       );
+//     })
+//     .then(data => renderCountry(data, 'neighbour'))
+//     .catch(err => {
+//       console.log(`${err} 🔥🔥🔥`);
+//       renderError(`Something went wrong 🔥🔥🔥 ${err.message}. Try again !`);
+//     })
+//     .finally(() => {
+//       countriesContainer.style.opacity = 1;
+//     });
+// };
 
-btn.addEventListener('click', function () {
-  getCountryData('australia');
-});
+// btn.addEventListener('click', function () {
+//   getCountryData('australia');
+// });
 
 // const getCountryData = function (country) {
 //   // COUNTRY 1
@@ -200,6 +200,10 @@ btn.addEventListener('click', function () {
 //   getCountryData('sgsr');
 // });
 
+///////////////////////
+// CODING CHALLENGES
+////////////////////////
+
 ///////////////////////////////////////
 // Coding Challenge #1
 
@@ -230,21 +234,87 @@ GOOD LUCK 😀
 // 1
 // Mapbox Endpoint : https://api.mapbox.com/geocoding/v5/mapbox.places/-74.00103015838751,40.7633444303612.json?access_token=pk.eyJ1IjoieWFubmRlbGFxdWV6ZSIsImEiOiJjbGR5a2NueTIwMDJrM25vOXBhaXdiNHJuIn0.LeeRjGt1japvv4d5yvaRKw
 
-const whereAmI = function (lat, lng) {
-  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lat},${lng}.json?access_token=pk.eyJ1IjoieWFubmRlbGFxdWV6ZSIsImEiOiJjbGR5a2NueTIwMDJrM25vOXBhaXdiNHJuIn0.LeeRjGt1japvv4d5yvaRKw`;
+// const whereAmI = function (lat, lng) {
+//   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lat},${lng}.json?access_token=pk.eyJ1IjoieWFubmRlbGFxdWV6ZSIsImEiOiJjbGR5a2NueTIwMDJrM25vOXBhaXdiNHJuIn0.LeeRjGt1japvv4d5yvaRKw`;
 
-  const url2 = `https://geocode.maps.co/reverse?lat=${lat}&lon=${lng}`;
-  fetch(url2)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      console.log(`Tu es à  ${data.address.city}, ${data.address.country}`);
-    })
-    .catch(err => {
-      console.log(`${err} 🔥🔥🔥`);
-    });
+//   const url2 = `https://geocode.maps.co/reverse?lat=${lat}&lon=${lng}`;
+//   fetch(url2)
+//     .then(response => response.json())
+//     .then(data => {
+//       console.log(data);
+//       console.log(`Tu es à  ${data.address.city}, ${data.address.country}`);
+//     })
+//     .catch(err => {
+//       console.log(`${err.message} 🔥🔥🔥`);
+//     });
+// };
+
+// whereAmI(52.508, 13.381);
+// whereAmI(19.037, 72.873);
+// whereAmI(-33.933, 18.474);
+
+///////////////////////////////////////
+// Coding Challenge #2
+
+/*
+Build the image loading functionality that I just showed you on the screen.
+
+Tasks are not super-descriptive this time, so that you can figure out some stuff on your own. Pretend you're working on your own 😉
+
+PART 1
+1. Create a function 'createImage' which receives imgPath as an input. This function returns a promise which creates a new image (use document.createElement('img')) and sets the .src attribute to the provided image path. When the image is done loading, append it to the DOM element with the 'images' class, and resolve the promise. The fulfilled value should be the image element itself. In case there is an error loading the image ('error' event), reject the promise.
+
+If this part is too tricky for you, just watch the first part of the solution.
+
+PART 2
+2. Consume the promise using .then and also add an error handler;
+3. After the image has loaded, pause execution for 2 seconds using the wait function we created earlier;
+4. After the 2 seconds have passed, hide the current image (set display to 'none'), and load a second image (HINT: Use the image element returned by the createImage promise to hide the current image. You will need a global variable for that 😉);
+5. After the second image has loaded, pause execution for 2 seconds again;
+6. After the 2 seconds have passed, hide the current image.
+
+TEST DATA: Images in the img folder. Test the error handler by passing a wrong image path. Set the network speed to 'Fast 3G' in the dev tools Network tab, otherwise images load too fast.
+
+GOOD LUCK 😀
+*/
+
+const wait = function (seconds) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, seconds * 1000);
+  });
 };
 
-whereAmI(52.508, 13.381);
-whereAmI(19.037, 72.873);
-whereAmI(-33.933, 18.474);
+const imgContainer = document.querySelector('.images');
+
+const createImage = function (imgPath) {
+  return new Promise(function (resolve, reject) {
+    const img = document.createElement('img');
+    img.src = imgPath;
+
+    img.addEventListener('load', function () {
+      imgContainer.append(img);
+      resolve(img);
+    });
+
+    img.addEventListener('error', function () {
+      reject(new Error('Img not found !!'));
+    });
+  });
+};
+
+let currentImg;
+createImage('img/img-1.jpg')
+  .then(img => {
+    currentImg = img;
+    console.log('Img 1 loaded');
+    return wait(2);
+  })
+  .then(() => {
+    currentImg.style.display = 'none';
+    return createImage('img/img-2.jpg');
+  })
+  .then(img => {
+    currentImg = img;
+    console.log('Img 2 loaded');
+  })
+  .catch(err => console.error(err));
